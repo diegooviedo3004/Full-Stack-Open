@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 const Header = () => <h1>Give feedback</h1>
 
-const Content = ({ good, neutral, bad }) => {
+const Statistics = ({ good, neutral, bad }) => {
 
   const totalVotes = good + neutral + bad
   let average = 0
@@ -50,7 +50,7 @@ const App = () => {
       <Button text={"good"} handleClick={sumGood} />
       <Button text={"neutral"} handleClick={sumNeutral} />
       <Button text={"bad"} handleClick={sumBad} />
-      <Content good={feedback.good} bad={feedback.bad} neutral={feedback.neutral} />
+      <Statistics good={feedback.good} bad={feedback.bad} neutral={feedback.neutral} />
     </>
   );
 };
