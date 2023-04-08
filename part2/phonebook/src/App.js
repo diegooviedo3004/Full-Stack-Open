@@ -1,15 +1,17 @@
 import React, { useState } from 'react'
-
-const Person = ({ name, number }) => <>{name} {number}<br /></>
+import {Input, Person, Header, Button} from './components/Utils'
 
 const App = () => {
 
     const [persons, setPersons] = useState([
-        { name: '' , number: ''}
+        { name: 'Arto Hellas', number: '040-123456' },
+        { name: 'Ada Lovelace', number: '39-44-5323523' },
+        { name: 'Dan Abramov', number: '12-43-234345' },
+        { name: 'Mary Poppendieck', number: '39-23-6423122' }
     ])
-
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
+    const [filter, setFilter] = useState('')
 
     const handleChangeName = (event) => {
         const value = event.target.value;
@@ -19,6 +21,11 @@ const App = () => {
     const handleNumberChange = (event) => {
         const value = event.target.value;
         setNewNumber(value);
+    }
+
+    const handleFilterChange = (event) => {
+        const value = event.target.value;
+        setFilter(value);
     }
 
     const handleSubmit = (e) => {
@@ -37,22 +44,21 @@ const App = () => {
         setNewNumber('');
     }
 
+    const personsToShow = persons.filter((person) => person.name.toLowerCase().includes(filter.toLowerCase())) 
+
+
     return (
         <div>
-            <h2>Phonebook</h2>
+            <Header text={"Phonebook"} />
+            <Input text={"filter shown with"} value={filter} handleChange={handleFilterChange}/>
+            <Header text={"Add a new"} />
             <form onSubmit={handleSubmit}>
-                <div>
-                    name: <input value={newName} onChange={handleChangeName} />
-                </div>
-                <div>
-                    number: <input value={newNumber} onChange={handleNumberChange}/>
-                </div>
-                <div>
-                    <button type="submit">add</button>
-                </div>
+                <Input text={"name"} value={newName} handleChange={handleChangeName} />
+                <Input text={"number"} value={newNumber} handleChange={handleNumberChange} />
+                <Button type="submit" text="add" />
             </form>
-            <h2>Numbers</h2>
-            {persons.map((person) => (
+            <Header text={"Numbers"} />
+            {personsToShow.map((person) => (
                 <Person key={person.name} name={person.name} number={person.number} />
             ))}
 
