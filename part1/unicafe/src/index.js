@@ -6,27 +6,31 @@ const Header = () => <h1>Give feedback</h1>
 
 const Statistics = ({ good, neutral, bad }) => {
 
-  const totalVotes = good + neutral + bad
   let average = 0
+  const totalVotes = good + neutral + bad
+
 
   if (totalVotes > 0) {
-    console.log(good*1 + bad*-1 / totalVotes)
+    console.log(good * 1 + bad * -1 / totalVotes)
     average = ((good * 1) + (neutral * 0) + (bad * -1)) / totalVotes
   }
 
   return (
     <>
       <h1>Statistics</h1>
-      good {good} <br />
-      neutral {neutral}<br />
-      bad {bad}<br />
-      all {totalVotes} <br />
-      average {average}<br />
       {totalVotes > 0 ? (
-        <>positive {(good / totalVotes) * 100}%</>
+        <>
+        good {good} <br />
+        neutral {neutral}<br />
+        bad {bad}<br />
+        all {totalVotes} <br />
+        average {average}<br />
+        positive {(good / totalVotes) * 100}%
+        </>
       ) : (
-        <>positive 0%</>
+        <>No feedback given</>
       )}
+      
     </>
   )
 }
