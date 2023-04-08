@@ -4,24 +4,41 @@ import { useState } from 'react'
 
 const Header = () => <h1>Give feedback</h1>;
 
-const StaticsLine = ({value, text}) => <>{text} {value}<br/></>
+const StaticsLine = ({ value, text }) => {
+  return (
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
+  )
+}
 
 const Statistics = ({ good, neutral, bad }) => {
   const totalVotes = good + neutral + bad;
   const average = totalVotes > 0 ? (good * 1 + bad * -1) / totalVotes : 0;
-  const positivePercentage = totalVotes > 0 ? (good / totalVotes) * 100 : 0;
+  const positivePercentage = totalVotes > 0 ? ((good / totalVotes) * 100) + " %" : "0 %";
 
   return (
     <>
       <h1>Statistics</h1>
       {totalVotes > 0 ? (
         <>
-          <StaticsLine text={"good"} value={good}/>
-          <StaticsLine text={"neutral"} value={neutral}/>
-          <StaticsLine text={"bad"} value={bad}/>
-          <StaticsLine text={"all"} value={totalVotes}/>
-          <StaticsLine text={"average"} value={average}/>
-          <StaticsLine text={"positive"} value={positivePercentage}/>
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <StaticsLine text={"good"} value={good} />
+              <StaticsLine text={"neutral"} value={neutral} />
+              <StaticsLine text={"bad"} value={bad} />
+              <StaticsLine text={"all"} value={totalVotes} />
+              <StaticsLine text={"average"} value={average} />
+              <StaticsLine text={"positive"} value={positivePercentage} />
+            </tbody>
+          </table>
         </>
       ) : (
         <>No feedback given</>
