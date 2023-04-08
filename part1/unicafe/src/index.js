@@ -5,12 +5,28 @@ import { useState } from 'react'
 const Header = () => <h1>Give feedback</h1>
 
 const Content = ({ good, neutral, bad }) => {
+
+  const totalVotes = good + neutral + bad
+  let average = 0
+
+  if (totalVotes > 0) {
+    console.log(good*1 + bad*-1 / totalVotes)
+    average = ((good * 1) + (neutral * 0) + (bad * -1)) / totalVotes
+  }
+
   return (
     <>
       <h1>Statistics</h1>
       good {good} <br />
       neutral {neutral}<br />
       bad {bad}<br />
+      all {totalVotes} <br />
+      average {average}<br />
+      {totalVotes > 0 ? (
+        <>positive {(good / totalVotes) * 100}%</>
+      ) : (
+        <>positive 0%</>
+      )}
     </>
   )
 }
