@@ -6,15 +6,31 @@ const App = (props) => {
 
   const [selected, setSelected] = useState(0);
 
-  const handleClick = () => {
+  const initialState = {};
+  for (let i = 0; i < props.anecdotes.length; i++) {
+    initialState[i] = 0;
+  }
+
+  const [points, setPoints] = useState(initialState);
+
+  const handleNextAnecdote = () => {
     const randomNumber = Math.floor(Math.random() * anecdotes.length);
     setSelected(randomNumber);
   }
 
+  const handleVote = (index) => {
+    const newArray = {...points, [index] : points[index] + 1};
+    setPoints(newArray);
+  }
+
+  console.log(points);
+  
   return (
     <div>
       {props.anecdotes[selected]} <br />
-      <button onClick={handleClick}>next anecdote</button>
+      has {points[selected]} votes
+      <button onClick={() => handleVote(selected)}>vote</button>
+      <button onClick={handleNextAnecdote}>next anecdote</button>
     </div>
   )
 }
