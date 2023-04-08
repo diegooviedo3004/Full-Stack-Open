@@ -19,18 +19,27 @@ const App = (props) => {
   }
 
   const handleVote = (index) => {
-    const newArray = {...points, [index] : points[index] + 1};
+    const newArray = { ...points, [index]: points[index] + 1 };
     setPoints(newArray);
   }
 
-  console.log(points);
-  
+  let maxIndex = 0;
+  Object.keys(points).forEach((key) => {
+    if (points[key] > points[maxIndex]) {
+      maxIndex = key;
+    }
+  });
+
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       {props.anecdotes[selected]} <br />
-      has {points[selected]} votes
+      has {points[selected]} votes <br />
       <button onClick={() => handleVote(selected)}>vote</button>
       <button onClick={handleNextAnecdote}>next anecdote</button>
+      <h1>Anecdote with most votes</h1>
+      {props.anecdotes[maxIndex]} <br />
+      has {points[maxIndex]} votes <br />
     </div>
   )
 }
