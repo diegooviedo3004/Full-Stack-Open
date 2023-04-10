@@ -1,4 +1,4 @@
-const Person = ({ name, number }) => <>{name} {number}<br /></>
+const Person = ({ name, number, handler }) => <>{name} {number} <button onClick={handler}>delete</button><br /></>
 
 const Header = ({ text }) => <h2>{text}</h2>
 

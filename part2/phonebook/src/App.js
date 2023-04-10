@@ -46,8 +46,27 @@ const App = () => {
             setNewName('');
             setNewNumber('');
         })
-        
+
     }
+
+    const handleDelete = (id) => {
+        const personToDelete = persons.find(person => person.id === id)
+        const ans = window.confirm(`Delete ${personToDelete.name} ?`)
+
+        if (!ans) return;
+
+        personService.deletePerson(id)
+            .then((res) => {
+                setPersons(persons.filter(p => p.id !== id))
+
+            }).catch(error => {
+                alert(
+                    `${personToDelete.name} was already deleted from server`
+                )
+                setPersons(persons.filter(p => p.id !== id))
+            })
+    }
+
 
     const personsToShow = persons.filter((person) => person.name.toLowerCase().includes(filter.toLowerCase()))
 
@@ -64,7 +83,7 @@ const App = () => {
             </form>
             <Header text={"Numbers"} />
             {personsToShow.map((person) => (
-                <Person key={person.name} name={person.name} number={person.number} />
+                <Person key={person.name} handler={() => handleDelete(person.id)} name={person.name} number={person.number} />
             ))}
 
         </div>
