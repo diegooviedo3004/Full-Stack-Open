@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { Input, Person, Header, Button } from './components/Utils'
-import axios from 'axios'
+import personService from './services/person'
 
 const App = () => {
 
     const [persons, setPersons] = useState([])
 
     useEffect(() => {
-        console.log('effect')
-        axios
-            .get('http://localhost:3001/persons')
-            .then(response => {
-                console.log('promise fulfilled')
-                setPersons(response.data)
-            })
+        personService.getAll().then(initialPeople => setPersons(initialPeople))
     }, [])
 
     const [newName, setNewName] = useState('')
@@ -46,9 +40,13 @@ const App = () => {
             alert(`${newPerson.name} is already added to phonebook`)
             return;
         }
-        setPersons(persons.concat(newPerson));
-        setNewName('');
-        setNewNumber('');
+
+        personService.create(newPerson).then(returnedPerson => {
+            setPersons(persons.concat(returnedPerson));
+            setNewName('');
+            setNewNumber('');
+        })
+        
     }
 
     const personsToShow = persons.filter((person) => person.name.toLowerCase().includes(filter.toLowerCase()))

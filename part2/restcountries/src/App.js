@@ -2,6 +2,8 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
+const api_key = process.env.REACT_APP_API_KEY
+
 const SearchBar = ({ value, handler }) => {
     return (
         <>
@@ -27,6 +29,28 @@ const Languages = ({ languages }) => {
     )
 }
 
+const Weather = ({ city }) => {
+
+    const [weather, setWeather] = useState([]);
+
+
+    useEffect(() => {
+
+        fetch(`http://api.weatherstack.com/current?access_key=${api_key}&query=${city}`)
+        .then((res) => {
+            console.log(res)
+        })
+        
+    }, [])
+
+
+    return (
+        <>
+            <h2>Weather in {city}</h2>
+        </>
+    )
+}
+
 const Country = ({ data }) => {
     return (
         <>
@@ -47,9 +71,12 @@ const Content = ({ countries, setSelectedCountry, selectedCountry }) => {
         setSelectedCountry(country);
     }
 
-    if(selectedCountry) {
+    if (selectedCountry) {
         return (
-            <Country data={selectedCountry} /> 
+            <>
+                <Country data={selectedCountry} />
+                <Weather city={selectedCountry.capital[0]} />
+            </>
         )
     }
 
@@ -65,16 +92,20 @@ const Content = ({ countries, setSelectedCountry, selectedCountry }) => {
         )
     }
 
-    if (totalCountries === 1 ) {
+    if (totalCountries === 1) {
+        const country = countries[0];
         return (
-            <Country data={countries[0]} />
+            <>
+                <Country data={country} /> <br />
+                <Weather city={country.capital[0]} />
+            </>
         )
     }
 
     return (
         <ul>
             {countries.map((country) => (
-                <li key={country.name.official}>{country.name.common} 
+                <li key={country.name.official}>{country.name.common}
                     <button onClick={() => handleSelectCountry(country)}>show</button>
                 </li>
             ))}
@@ -97,7 +128,7 @@ const App = () => {
             .then((response) => {
                 setCountries(response.data);
             }).catch((error) => {
-                alert("Server error");
+                setCountries([])
             });
 
     }
