@@ -3,13 +3,17 @@ import { Input, Person, Header, Button } from './components/Utils'
 import personService from './services/person'
 import './index.css'
 
-const Notification = ({ message }) => {
+const Notification = ({ message, type }) => {
     if (message === null) {
       return null
     }
+
+    if (type === null) {
+        return null
+    }
   
     return (
-      <div className='success'>
+      <div className={type}>
         {message}
       </div>
     )
@@ -22,6 +26,7 @@ const App = () => {
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
     const [filter, setFilter] = useState('')
+
     const [message, setMessage] = useState(null)
 
 
@@ -53,16 +58,27 @@ const App = () => {
         personService.update(person.id, newPerson)
             .then(returnedPerson => {
                 setPersons(persons.map((p) => p.id !== person.id ? p : returnedPerson))
-                setMessage(
-                    `${returnedPerson.name} number's changed`
-                )
+
+                const newMessage = {
+                    text: `${returnedPerson.name} number's changed`,
+                    type: 'success'
+                }
+
+                setMessage(newMessage)
                 setTimeout(() => {
                     setMessage(null)
                 }, 5000)
             }).catch(error => {
-                alert(
-                    `the person '${person.name}' was already deleted from server`
-                )
+                const newMessage = {
+                    text: `Information of ${person.name} has already been removed from the server.`,
+                    type: 'error'
+                }
+    
+                setMessage(newMessage)
+    
+                setTimeout(() => {
+                    setMessage(null)
+                }, 5000)
                 setPersons(persons.filter(p => p.id !== person.id))
             })
     }
@@ -80,9 +96,13 @@ const App = () => {
         }
 
         personService.create(newPerson).then(returnedPerson => {
-            setMessage(
-                `Added ${returnedPerson.name}`
-            )
+            const newMessage = {
+                text: `Added ${returnedPerson.name}`,
+                type: 'success'
+            }
+
+            setMessage(newMessage)
+
             setTimeout(() => {
                 setMessage(null)
             }, 5000)
@@ -118,7 +138,7 @@ const App = () => {
     return (
         <div>
             <Header text={"Phonebook"} />
-            <Notification message={message}/>
+            <Notification message={message?.text} type={message?.type}/>
             <Input text={"filter shown with"} value={filter} handleChange={handleFilterChange} />
             <Header text={"Add a new"} />
             <form onSubmit={handleSubmit}>
